@@ -1,20 +1,16 @@
 const Promises = require('./index');
 
-let p = new Promises(function(resolve, reject) {
-  setTimeout(function() {
-    resolve('北京');
-  }, 1000);
-});
-let p2 = new Promises(function(resolve, reject) {
-  setTimeout(function() {
-    resolve('南京');
-  }, 500);
-});
-let p3 = new Promises(function(resolve, reject) {
-  setTimeout(function() {
-    resolve('东京');
-  });
-});
-Promises.race([p, p2, p3]).then(function(data) {
-  console.log(data);
-});
+function read() {
+  let defer = Promises.defer(); // Q里写的是Q.defer()
+  defer.resolve(1111);
+  return defer.promise;
+}
+
+read().then(
+  function(data) {
+    console.log(data);
+  },
+  function(err) {
+    console.log(err);
+  }
+);

@@ -180,4 +180,25 @@ Promises.race = function(items) {
   });
 };
 
+Promises.resolve = function(value) {
+  return new Promises(function(resolve, reject) {
+    resolve(value);
+  });
+};
+Promises.reject = function(reason) {
+  return new Promises(function(resolve, reject) {
+    reject(reason);
+  });
+};
+
+Promises.defer = Promises.deferred = function() {
+  let def = {};
+  def.promise = new Promises(function(resolve, reject) {
+    def.resolve = resolve;
+    def.reject = reject;
+  });
+
+  return def;
+};
+
 module.exports = Promises;
