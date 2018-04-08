@@ -150,4 +150,9 @@ function resolvePromise(p2, x, resolve, reject) {
     resolve(x); // 返回一个普通值
   }
 }
+
+Promises.prototype.catch = function(callback) {
+  return this.then(null, callback);
+};
+
 module.exports = Promises;
