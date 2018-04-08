@@ -172,4 +172,12 @@ Promises.all = function(items) {
   });
 };
 
+Promises.race = function(items) {
+  return new Promise(function(resolve, reject) {
+    items.forEach((item, index) => {
+      item.then(resolve, reject);
+    });
+  });
+};
+
 module.exports = Promises;

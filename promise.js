@@ -8,12 +8,13 @@ let p = new Promises(function(resolve, reject) {
 let p2 = new Promises(function(resolve, reject) {
   setTimeout(function() {
     resolve('南京');
-  }, 200);
+  }, 500);
 });
 let p3 = new Promises(function(resolve, reject) {
-  resolve('东京');
+  setTimeout(function() {
+    resolve('东京');
+  });
 });
-
-Promises.all([p, p2, p3]).then(function(data) {
+Promises.race([p, p2, p3]).then(function(data) {
   console.log(data);
 });
