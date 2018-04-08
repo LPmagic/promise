@@ -1,12 +1,19 @@
 const Promises = require('./index');
 
-let p = new Promise(function(resolve, reject) {
-  reject('错错错');
+let p = new Promises(function(resolve, reject) {
+  setTimeout(function() {
+    resolve('北京');
+  }, 1000);
 });
-p
-  .then(function(data) {
-    console.log(data);
-  })
-  .catch(function(e) {
-    console.log(e); // '错错错'
-  });
+let p2 = new Promises(function(resolve, reject) {
+  setTimeout(function() {
+    resolve('南京');
+  }, 200);
+});
+let p3 = new Promises(function(resolve, reject) {
+  resolve('东京');
+});
+
+Promises.all([p, p2, p3]).then(function(data) {
+  console.log(data);
+});

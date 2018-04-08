@@ -155,4 +155,21 @@ Promises.prototype.catch = function(callback) {
   return this.then(null, callback);
 };
 
+Promises.all = function(items) {
+  return new Promises(function(resolve, reject) {
+    const res = [];
+    let num = 0;
+    const length = items.length;
+
+    items.forEach((item, index) => {
+      item.then(function(data) {
+        res[index] = data;
+        if (++num === length) {
+          resolve(res);
+        }
+      }, reject);
+    });
+  });
+};
+
 module.exports = Promises;
