@@ -1,20 +1,30 @@
-const Promises = executor => {
+function Promises(executor) {
   const _this = this;
   _this.status = 'pending';
   _this.value = null;
   _this.reason = null;
+  _this.onFulfilledCb = [];
+  _this.onRejectedCb = [];
 
   const resolve = value => {
     if (_this.status === 'pending') {
       _this.status = 'fulfilled';
-      self.value = value;
+      _this.value = value;
+
+      _this.onFulfilledCb.forEach(item => {
+        item();
+      });
     }
   };
 
   const reject = reason => {
     if (_this.status === 'pending') {
       _this.status = 'rejected';
-      self.reason = reason;
+      _this.reason = reason;
+
+      _this.onRejectedCb.forEach(item => {
+        item();
+      });
     }
   };
 
@@ -23,9 +33,9 @@ const Promises = executor => {
   } catch (error) {
     reject(error);
   }
-};
+}
 
-Promises.prototype.then = function(onFulfilled, onRejected) {
+Promises.prototype.then = (onFulfilled, onRejected) => {
   const _this = this;
   if (_this.status === 'fulfilled') {
     onFulfilled();
@@ -34,6 +44,16 @@ Promises.prototype.then = function(onFulfilled, onRejected) {
   if (_this.status === 'rejected') {
     onRejected();
   }
+
+  if (_this.status === 'pending') {
+    // 将成功的回调添加到数组中
+    _this.onFulfilledCb.push(function() {
+      onFulfilled(_this.value);
+    });
+    _this.onRejectedCb.push(function() {
+      onRejected(_this.reason);
+    });
+  }
 };
 
-module.exports = Promise;
+module.exports = Promises;

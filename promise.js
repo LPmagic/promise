@@ -1,12 +1,16 @@
-let p = new Promise((resolve, reject) => {
-  reject('失败');
-  resolve('成功');
-});
-p.then(
-  data => {
-    console.log(data, 1);
+const Promises = require('./index');
+
+let p = new Promises(function(resolve, reject) {
+  // 异步操作
+  setTimeout(function() {
+    resolve('ok');
+  }, 1000);
+}).then(
+  function(data) {
+    console.log(data); // 'ok'
+    return `下面的人接着  + ${data}`;
   },
-  err => {
-    console.log(err, 2);
+  function(err) {
+    console.log(err);
   }
 );
