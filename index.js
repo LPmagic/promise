@@ -10,7 +10,6 @@ function Promises(executor) {
     if (_this.status === 'pending') {
       _this.status = 'fulfilled';
       _this.value = value;
-
       _this.onFulfilledCb.forEach(item => {
         item();
       });
@@ -35,14 +34,15 @@ function Promises(executor) {
   }
 }
 
-Promises.prototype.then = (onFulfilled, onRejected) => {
+// 这里不能使用箭头函数
+Promises.prototype.then = function(onFulfilled, onRejected) {
   const _this = this;
   if (_this.status === 'fulfilled') {
-    onFulfilled();
+    onFulfilled(_this.value);
   }
 
   if (_this.status === 'rejected') {
-    onRejected();
+    onRejected(_this.reason);
   }
 
   if (_this.status === 'pending') {
